@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SPARKLES: Forecasting satellite trail contamination on space-telescopes </title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      background-color: #0f172a;
+      color: #f8fafc;
+      scroll-behavior: smooth;
+    }
+
+    .star-field {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 20% 20%, rgba(192, 223, 255, 0.18), transparent 10%),
+        radial-gradient(circle at 80% 10%, rgba(148, 163, 184, 0.14), transparent 8%),
+        radial-gradient(circle at 50% 40%, rgba(59, 130, 246, 0.14), transparent 7%),
+        radial-gradient(circle at 15% 70%, rgba(168, 85, 247, 0.12), transparent 10%),
+        radial-gradient(circle at 85% 75%, rgba(147, 197, 253, 0.10), transparent 9%);
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.9;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(circle, rgba(255, 255, 255, 0.08) 2px, transparent 2px);
+      background-size: 30px 30px;
+      opacity: 0.35;
+      pointer-events: none;
+    }
+
+    .accordion-button:hover,
+    .accordion-button:focus {
+      background-color: rgba(148, 163, 184, 0.08);
+    }
+  </style>
+</head>
+<body class="min-h-screen relative overflow-x-hidden">
+  <div class="star-field"></div>
+
+  <header class="hero relative overflow-hidden py-12 px-4 sm:px-6 lg:px-12">
+    <div class="mx-auto max-w-7xl relative z-10">
+      <nav class="mb-8 flex flex-col gap-3 rounded-3xl border border-slate-700/80 bg-slate-950/70 p-4 shadow-2xl shadow-slate-950/40 backdrop-blur-xl sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <p class="text-sm uppercase tracking-[0.4em] text-sky-300/80">Living Article</p>
+          <h1 class="mt-2 text-3xl font-semibold sm:text-4xl">SPARKLES: Satellite Trail Forecast</h1>
+        </div>
+        <div class="flex flex-wrap gap-3 text-sm text-slate-200">
+          <a href="#forecast" class="rounded-full bg-slate-800/90 px-4 py-2 transition hover:bg-slate-700/90">Forecast</a>
+          <a href="#models" class="rounded-full bg-slate-800/90 px-4 py-2 transition hover:bg-slate-700/90">Models</a>
+          <a href="#methodology" class="rounded-full bg-slate-800/90 px-4 py-2 transition hover:bg-slate-700/90">Methodology</a>
+          <a href="#resources" class="rounded-full bg-slate-800/90 px-4 py-2 transition hover:bg-slate-700/90">Resources</a>
+          <a href="#publications" class="rounded-full bg-slate-800/90 px-4 py-2 transition hover:bg-slate-700/90">Publications</a>
+          <a href="#about" class="rounded-full bg-slate-800/90 px-4 py-2 transition hover:bg-slate-700/90">About</a>
+        </div>
+      </nav>
+
+      <div class="rounded-[2rem] border border-slate-700/80 bg-slate-950/80 p-8 shadow-2xl shadow-slate-950/45 backdrop-blur-xl lg:p-12">
+        <div class="grid gap-8 lg:grid-cols-[1.8fr_1fr] lg:items-center">
+          <div>
+            <p class="inline-flex items-center rounded-full bg-sky-500/15 px-4 py-2 text-sm font-medium text-slate-100">Science / Dark Mode</p>
+            <h2 class="mt-6 text-4xl font-semibold tracking-tight text-white sm:text-5xl">Satellite megaconstellations will threaten space-based astronomy</h2>
+            <p class="mt-4 max-w-2xl text-slate-300">A living article companion for the Nature paper <strong>10.1038/s41586-025-09759-5</strong>, visualizing the latest trail forecasts, model repositories, and methodologies for preserving the dark sky.</p>
+            <div class="mt-8 flex flex-wrap gap-3">
+              <a href="#forecast" class="inline-flex items-center justify-center rounded-full bg-sky-500 px-6 py-3 text-sm font-semibold text-slate-950 transition hover:bg-sky-400">View Forecast</a>
+              <a href="#publications" class="inline-flex items-center justify-center rounded-full border border-slate-600 px-6 py-3 text-sm font-semibold text-slate-200 transition hover:border-slate-500 hover:text-white">Read Publications</a>
+            </div>
+          </div>
+          <div class="relative rounded-3xl border border-slate-700/80 bg-slate-900/80 p-5 shadow-xl shadow-slate-950/30">
+            <div class="absolute inset-0 rounded-3xl bg-gradient-to-br from-slate-950 via-transparent to-sky-700/10 opacity-80"></div>
+            <div class="relative flex h-full flex-col justify-between gap-4 text-slate-200">
+              <div class="space-y-4">
+                <div class="flex items-center justify-between rounded-3xl bg-slate-800/70 p-4">
+                  <div>
+                    <p class="text-sm uppercase tracking-[0.32em] text-slate-400">Current Status</p>
+                    <p class="mt-1 text-xl font-semibold">Active Monitoring</p>
+                  </div>
+                  <span class="rounded-full bg-emerald-500/15 px-3 py-1 text-xs font-semibold uppercase tracking-[0.25em] text-emerald-300">Online</span>
+                </div>
+                <div class="rounded-3xl border border-slate-700/80 bg-slate-950/95 p-4">
+                  <p class="text-sm uppercase tracking-[0.32em] text-slate-400">Trail Density</p>
+                  <div class="mt-4 h-48 w-full rounded-3xl bg-slate-950/90 p-4">
+                    <canvas id="trailDensityChart" class="h-full w-full"></canvas>
+                  </div>
+                </div>
+              </div>
+              <div class="rounded-3xl border border-slate-700/80 bg-slate-950/90 p-4 text-sm text-slate-300">
+                <p class="font-semibold text-slate-100">Live forecast summary</p>
+                <p class="mt-2 leading-6">Simulated trail visibility for low-Earth orbit constellations, calibrated to the latest SPARKLES model. Predictions are updated hourly and tune telescope exposure selection for dark-sky stewardship.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="relative z-10 mx-auto max-w-7xl px-4 pb-16 sm:px-6 lg:px-12">
+    <section id="forecast" class="scroll-mt-24 py-12">
+      <div class="mb-8 flex flex-col gap-4 rounded-[2rem] border border-slate-700/70 bg-slate-950/75 p-8 shadow-2xl shadow-slate-950/30 backdrop-blur-xl">
+        <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <p class="text-sm uppercase tracking-[0.32em] text-sky-300/80">Section 1</p>
+            <h2 class="text-3xl font-semibold text-white">Latest Satellite Trail Forecast</h2>
+          </div>
+          <span class="inline-flex items-center rounded-full bg-sky-500/15 px-4 py-2 text-sm font-semibold text-sky-200">Updated April 2026</span>
+        </div>
+
+        <div class="grid gap-6 lg:grid-cols-[1.3fr_0.9fr]">
+          <div class="space-y-6 rounded-[1.75rem] border border-slate-700/80 bg-slate-900/90 p-6 shadow-inner shadow-slate-950/20">
+            <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+              <div>
+                <p class="text-sm uppercase tracking-[0.32em] text-slate-400">Forecast Dashboard</p>
+                <h3 class="mt-2 text-2xl font-semibold text-white">Trail density by observation band</h3>
+              </div>
+              <span class="rounded-full bg-violet-500/15 px-4 py-2 text-sm font-semibold text-violet-200">Active Monitoring</span>
+            </div>
+            <div class="grid gap-4 sm:grid-cols-3">
+              <div class="rounded-3xl bg-slate-950/90 p-4 text-slate-300 ring-1 ring-slate-700/60">
+                <p class="text-sm uppercase tracking-[0.28em] text-slate-500">Current risk</p>
+                <p class="mt-2 text-3xl font-semibold text-white">Moderate</p>
+              </div>
+              <div class="rounded-3xl bg-slate-950/90 p-4 text-slate-300 ring-1 ring-slate-700/60">
+                <p class="text-sm uppercase tracking-[0.28em] text-slate-500">Projected trails</p>
+                <p class="mt-2 text-3xl font-semibold text-white">14 / hr</p>
+              </div>
+              <div class="rounded-3xl bg-slate-950/90 p-4 text-slate-300 ring-1 ring-slate-700/60">
+                <p class="text-sm uppercase tracking-[0.28em] text-slate-500">Observation impact</p>
+                <p class="mt-2 text-3xl font-semibold text-white">8%</p>
+              </div>
+            </div>
+          </div>
+          <div class="rounded-[1.75rem] border border-slate-700/80 bg-slate-900/90 p-6 shadow-inner shadow-slate-950/20">
+            <p class="text-sm uppercase tracking-[0.32em] text-slate-400">Placeholder chart</p>
+            <div class="mt-6 h-96 rounded-[1.5rem] bg-slate-950/95 p-4">
+              <canvas id="forecastChart" class="h-full w-full"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="models" class="scroll-mt-24 py-12">
+      <div class="mb-8 rounded-[2rem] border border-slate-700/70 bg-slate-950/75 p-8 shadow-2xl shadow-slate-950/30 backdrop-blur-xl">
+        <div class="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <p class="text-sm uppercase tracking-[0.32em] text-sky-300/80">Section 2</p>
+            <h2 class="text-3xl font-semibold text-white">Satellite Trail Models Repository</h2>
+            <p class="mt-3 max-w-2xl text-slate-400">Select instrument-specific simulation models for Hubble, SPHEREx, ARRAKIHS, and Xuntian. Each card includes core parameters and a ready-to-download file placeholder.</p>
+          </div>
+        </div>
+
+        <div class="mt-10 grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
+          <article class="rounded-[1.75rem] border border-slate-700/80 bg-slate-900/95 p-6 transition hover:-translate-y-1 hover:border-sky-500/50">
+            <h3 class="text-xl font-semibold text-white">Hubble</h3>
+            <p class="mt-3 text-slate-300">Wide-field optical simulation using orbit altitude 540 km, zenith angles &lt; 70°, and Earth avoidance constraints to estimate visible trail frequency.</p>
+            <ul class="mt-4 space-y-2 text-sm text-slate-400">
+              <li>Instrument: WFC3/ACS</li>
+              <li>Wavelength: 0.3–1.0 µm</li>
+              <li>Outputs: FITS metadata + CSV schedule</li>
+            </ul>
+            <a href="#" class="mt-6 inline-flex w-full items-center justify-center rounded-full bg-sky-500 px-4 py-3 text-sm font-semibold text-slate-950 transition hover:bg-sky-400">Download Model</a>
+          </article>
+
+          <article class="rounded-[1.75rem] border border-slate-700/80 bg-slate-900/95 p-6 transition hover:-translate-y-1 hover:border-sky-500/50">
+            <h3 class="text-xl font-semibold text-white">SPHEREx</h3>
+            <p class="mt-3 text-slate-300">Near-infrared survey model with wide-angle scanning, Earth limb avoidance, and persistent trail detection thresholds for spectral mapping missions.</p>
+            <ul class="mt-4 space-y-2 text-sm text-slate-400">
+              <li>Instrument: NIR spectrometer</li>
+              <li>Scan: all-sky in 6 months</li>
+              <li>Outputs: FITS + JSON</li>
+            </ul>
+            <a href="#" class="mt-6 inline-flex w-full items-center justify-center rounded-full bg-sky-500 px-4 py-3 text-sm font-semibold text-slate-950 transition hover:bg-sky-400">Download Model</a>
+          </article>
+
+          <article class="rounded-[1.75rem] border border-slate-700/80 bg-slate-900/95 p-6 transition hover:-translate-y-1 hover:border-sky-500/50">
+            <h3 class="text-xl font-semibold text-white">ARRAKIHS</h3>
+            <p class="mt-3 text-slate-300">Deep field survey model designed for infrared imaging with strict zenith and Earth avoidance filters to preserve sensitivity to faint sources.</p>
+            <ul class="mt-4 space-y-2 text-sm text-slate-400">
+              <li>Instrument: wide/deep imaging</li>
+              <li>Constraint: zenith angle &lt; 65°</li>
+              <li>Outputs: CSV + metadata</li>
+            </ul>
+            <a href="#" class="mt-6 inline-flex w-full items-center justify-center rounded-full bg-sky-500 px-4 py-3 text-sm font-semibold text-slate-950 transition hover:bg-sky-400">Download Model</a>
+          </article>
+
+          <article class="rounded-[1.75rem] border border-slate-700/80 bg-slate-900/95 p-6 transition hover:-translate-y-1 hover:border-sky-500/50">
+            <h3 class="text-xl font-semibold text-white">Xuntian</h3>
+            <p class="mt-3 text-slate-300">High-resolution space-based survey model with wide field exposure planning and real-time trail prediction for the Chinese space telescope.</p>
+            <ul class="mt-4 space-y-2 text-sm text-slate-400">
+              <li>Instrument: optical/UV imaging</li>
+              <li>Orbit: LEO survey</li>
+              <li>Outputs: FITS + CSV</li>
+            </ul>
+            <a href="#" class="mt-6 inline-flex w-full items-center justify-center rounded-full bg-sky-500 px-4 py-3 text-sm font-semibold text-slate-950 transition hover:bg-sky-400">Download Model</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="methodology" class="scroll-mt-24 py-12">
+      <div class="rounded-[2rem] border border-slate-700/70 bg-slate-950/75 p-8 shadow-2xl shadow-slate-950/30 backdrop-blur-xl">
+        <div class="grid gap-8 lg:grid-cols-[1.1fr_0.9fr]">
+          <div>
+            <p class="text-sm uppercase tracking-[0.32em] text-sky-300/80">Section 3</p>
+            <h2 class="mt-2 text-3xl font-semibold text-white">Methodology</h2>
+            <p class="mt-4 text-slate-400">A clean methodology summary highlights the simulation constraints, observational geometry, and the modeling approach used to protect space-based astronomy from satellite contamination.</p>
+            <ul class="mt-8 space-y-4 text-slate-300">
+              <li class="rounded-3xl border border-slate-700/80 bg-slate-900/90 p-5">
+                <p class="font-semibold text-white">Zenith angle constraints</p>
+                <p class="mt-2 text-sm text-slate-400">Simulations restrict observations to zenith angles below 70° to reduce stray satellite trail exposure near the horizon.</p>
+              </li>
+              <li class="rounded-3xl border border-slate-700/80 bg-slate-900/90 p-5">
+                <p class="font-semibold text-white">Earth avoidance</p>
+                <p class="mt-2 text-sm text-slate-400">Model enforces Earth limb avoidance to minimize scattered sunlight and atmospheric glow in space telescope fields of view.</p>
+              </li>
+              <li class="rounded-3xl border border-slate-700/80 bg-slate-900/90 p-5">
+                <p class="font-semibold text-white">Trail density sampling</p>
+                <p class="mt-2 text-sm text-slate-400">Density maps are generated across latitude, inclination, and local solar time to capture the full exposure risk for each mission.</p>
+              </li>
+              <li class="rounded-3xl border border-slate-700/80 bg-slate-900/90 p-5">
+                <p class="font-semibold text-white">Time-domain validation</p>
+                <p class="mt-2 text-sm text-slate-400">The methodology includes temporal forecast windows and matches simulations to latest satellite catalog ephemerides.</p>
+              </li>
+            </ul>
+          </div>
+
+          <div class="rounded-[2rem] border border-slate-700/80 bg-slate-900/95 p-6 shadow-inner shadow-slate-950/20">
+            <div class="flex h-full flex-col justify-between gap-6">
+              <div>
+                <h3 class="text-2xl font-semibold text-white">Technical diagram</h3>
+                <p class="mt-3 text-slate-400">A schematic view of the simulation geometry, showing satellite trails crossing the telescope line of sight under mission constraints.</p>
+              </div>
+              <div class="aspect-[4/3] rounded-[2rem] bg-slate-950/90 p-4">
+                <svg viewBox="0 0 500 380" class="h-full w-full" aria-hidden="true">
+                  <defs>
+                    <linearGradient id="trailGrad" x1="0" y1="0" x2="1" y2="1">
+                      <stop offset="0%" stop-color="#60a5fa" stop-opacity="0.9" />
+                      <stop offset="100%" stop-color="#c084fc" stop-opacity="0.55" />
+                    </linearGradient>
+                  </defs>
+                  <rect x="0" y="0" width="500" height="380" rx="28" fill="#0f172a" />
+                  <g opacity="0.85">
+                    <circle cx="120" cy="95" r="40" fill="#94a3b8" opacity="0.12" />
+                    <circle cx="390" cy="70" r="28" fill="#38bdf8" opacity="0.18" />
+                    <circle cx="320" cy="280" r="30" fill="#a78bfa" opacity="0.16" />
+                    <circle cx="160" cy="260" r="24" fill="#60a5fa" opacity="0.15" />
+                  </g>
+                  <path d="M 80 300 C 180 210, 240 180, 320 120" fill="none" stroke="url(#trailGrad)" stroke-width="8" stroke-linecap="round" />
+                  <path d="M 150 320 C 180 250, 260 210, 380 160" fill="none" stroke="#38bdf8" stroke-width="4" stroke-dasharray="12 10" stroke-linecap="round" opacity="0.85" />
+                  <g stroke="#fff" stroke-width="2" fill="none" opacity="0.7">
+                    <circle cx="105" cy="90" r="12" />
+                    <circle cx="395" cy="65" r="8" />
+                    <circle cx="315" cy="273" r="10" />
+                    <circle cx="150" cy="255" r="8" />
+                  </g>
+                  <text x="30" y="50" fill="#cbd5e1" font-size="18" font-family="Inter, sans-serif">Telescope</text>
+                  <line x1="70" y1="60" x2="115" y2="90" stroke="#94a3b8" stroke-width="1.5" opacity="0.8" />
+                  <text x="340" y="110" fill="#cbd5e1" font-size="18" font-family="Inter, sans-serif">Satellite trail</text>
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="resources" class="scroll-mt-24 py-12">
+      <div class="rounded-[2rem] border border-slate-700/70 bg-slate-950/75 p-8 shadow-2xl shadow-slate-950/30 backdrop-blur-xl">
+        <div class="mb-8 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <p class="text-sm uppercase tracking-[0.32em] text-sky-300/80">Section 4</p>
+            <h2 class="text-3xl font-semibold text-white">Additional Information</h2>
+            <p class="mt-3 max-w-2xl text-slate-400">Accessible data and software details for the SPARKLES repository, published as an interactive resource reference.</p>
+          </div>
+        </div>
+
+        <div class="space-y-4">
+          <article class="rounded-[1.75rem] border border-slate-700/80 bg-slate-900/95 p-6">
+            <button aria-expanded="false" class="accordion-button flex w-full items-center justify-between text-left text-slate-100" onclick="toggleAccordion(this)">
+              <span class="text-lg font-semibold">Frequently Asked Questions</span>
+              <span class="text-slate-400">+</span>
+            </button>
+            <div class="accordion-panel mt-4 hidden space-y-3 text-slate-300">
+              <p><strong>Q:</strong> How often are forecasts updated?<br /><strong>A:</strong> Daily, with hourly refreshes when new satellite data are available.</p>
+              <p><strong>Q:</strong> Can I import these data into mission planning tools?<br /><strong>A:</strong> Yes, model exports support FITS, CSV, and JSON formats for mission integration.</p>
+            </div>
+          </article>
+
+          <article class="rounded-[1.75rem] border border-slate-700/80 bg-slate-900/95 p-6">
+            <button aria-expanded="false" class="accordion-button flex w-full items-center justify-between text-left text-slate-100" onclick="toggleAccordion(this)">
+              <span class="text-lg font-semibold">Data Formats</span>
+              <span class="text-slate-400">+</span>
+            </button>
+            <div class="accordion-panel mt-4 hidden space-y-3 text-slate-300">
+              <ul class="space-y-2">
+                <li><strong>FITS:</strong> Primary standard for astronomical images and metadata packaging.</li>
+                <li><strong>CSV:</strong> Tabular export for schedule planning, trail counts, and model parameters.</li>
+                <li><strong>JSON:</strong> Machine-readable catalogs for integration with simulation pipelines.</li>
+              </ul>
+            </div>
+          </article>
+
+          <article class="rounded-[1.75rem] border border-slate-700/80 bg-slate-900/95 p-6">
+            <button aria-expanded="false" class="accordion-button flex w-full items-center justify-between text-left text-slate-100" onclick="toggleAccordion(this)">
+              <span class="text-lg font-semibold">Software Requirements</span>
+              <span class="text-slate-400">+</span>
+            </button>
+            <div class="accordion-panel mt-4 hidden space-y-3 text-slate-300">
+              <ul class="space-y-2">
+                <li><strong>Python 3.10+</strong> for analysis scripts and orbit propagation.</li>
+                <li><strong>Astropy</strong> for FITS file handling and celestial coordinate transforms.</li>
+                <li><strong>NumPy / Pandas</strong> for data preparation and model evaluation.</li>
+                <li><strong>Jupyter Lab</strong> for interactive results exploration and documentation.</li>
+              </ul>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="publications" class="scroll-mt-24 py-12">
+      <div class="rounded-[2rem] border border-slate-700/70 bg-slate-950/75 p-8 shadow-2xl shadow-slate-950/30 backdrop-blur-xl">
+        <div class="mb-8">
+          <p class="text-sm uppercase tracking-[0.32em] text-sky-300/80">Section 5</p>
+          <h2 class="mt-2 text-3xl font-semibold text-white">Publications</h2>
+          <p class="mt-3 max-w-2xl text-slate-400">Foundational papers and repository references supporting the SPARKLES living article.</p>
+        </div>
+
+        <div class="grid gap-6 sm:grid-cols-2">
+          <article class="rounded-[1.75rem] border border-slate-700/80 bg-slate-900/95 p-6 text-slate-300">
+            <h3 class="text-xl font-semibold text-white">Primary paper</h3>
+            <p class="mt-4">S. Author et al., <strong>Satellite megaconstellations will threaten space-based astronomy</strong>, Nature 2025.</p>
+            <p class="mt-4 text-sm text-slate-400">DOI: <a class="text-sky-300 hover:text-sky-200" href="https://www.nature.com/articles/s41586-025-09759-5" target="_blank" rel="noreferrer">10.1038/s41586-025-09759-5</a></p>
+          </article>
+
+          <article class="rounded-[1.75rem] border border-slate-700/80 bg-slate-900/95 p-6 text-slate-300">
+            <h3 class="text-xl font-semibold text-white">Repository</h3>
+            <p class="mt-4">Zenodo archive with datasets and simulation outputs for SPARKLES models, including FITS and CSV exports for mission planners.</p>
+            <p class="mt-4 text-sm text-slate-400">Access the repository at: <a class="text-sky-300 hover:text-sky-200" href="https://zenodo.org/" target="_blank" rel="noreferrer">Zenodo</a></p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="about" class="scroll-mt-24 py-12">
+      <div class="rounded-[2rem] border border-slate-700/70 bg-slate-950/75 p-8 shadow-2xl shadow-slate-950/30 backdrop-blur-xl">
+        <div class="grid gap-8 lg:grid-cols-[1.2fr_0.8fr] lg:items-center">
+          <div>
+            <p class="text-sm uppercase tracking-[0.32em] text-sky-300/80">Section 6</p>
+            <h2 class="mt-2 text-3xl font-semibold text-white">About SPARKLES</h2>
+            <p class="mt-4 text-slate-400">SPARKLES protects the dark sky by quantifying satellite trail impact and giving scientific teams tools to make responsible observation decisions in the era of megaconstellations.</p>
+            <ul class="mt-8 space-y-4 text-slate-300">
+              <li class="flex gap-3"><span class="mt-1 inline-flex h-2.5 w-2.5 rounded-full bg-sky-400"></span><span>Preserve space-based astronomy through predictive trail modeling, mission planning, and stakeholder collaboration.</span></li>
+              <li class="flex gap-3"><span class="mt-1 inline-flex h-2.5 w-2.5 rounded-full bg-violet-400"></span><span>Deliver accessible datasets, open formats, and community-ready science communication.</span></li>
+              <li class="flex gap-3"><span class="mt-1 inline-flex h-2.5 w-2.5 rounded-full bg-sky-300"></span><span>Support policy, operator engagement, and mission design with evidence-based contamination forecasts.</span></li>
+            </ul>
+          </div>
+          <div class="rounded-[2rem] border border-slate-700/80 bg-slate-900/95 p-8 text-slate-300">
+            <p class="text-lg font-semibold text-white">Mission statement</p>
+            <p class="mt-4 leading-7">SPARKLES exists to ensure that the next generation of space telescopes can observe the universe with minimal interference from satellite megaconstellations. We bridge the gap between orbital engineering, astronomical science, and data stewardship to defend the integrity of space-based observations.</p>
+            <div class="mt-6 space-y-4 rounded-3xl border border-slate-700/80 bg-slate-950/90 p-5">
+              <p class="text-sm uppercase tracking-[0.3em] text-slate-500">Core values</p>
+              <ul class="space-y-3 text-slate-300">
+                <li>Science-first decision making</li>
+                <li>Open, reproducible forecasting</li>
+                <li>Long-term dark sky protection</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="border-t border-slate-800/80 bg-slate-950/70 py-8 text-slate-400">
+    <div class="mx-auto flex max-w-7xl flex-col gap-4 px-4 sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-12">
+      <p class="text-sm">SPARKLES Living Article · Nature 2025 paper companion · Dark mode scientific dashboard.</p>
+      <p class="text-sm">Built with HTML5, Tailwind CSS, and vanilla JavaScript.</p>
+    </div>
+  </footer>
+
+  <script>
+    const forecastCtx = document.getElementById('forecastChart').getContext('2d');
+    const trailDensityCtx = document.getElementById('trailDensityChart').getContext('2d');
+
+    new Chart(forecastCtx, {
+      type: 'bar',
+      data: {
+        labels: ['Hubble', 'SPHEREx', 'ARRAKIHS', 'Xuntian'],
+        datasets: [{
+          label: 'Trail count / hr',
+          data: [8, 12, 5, 9],
+          backgroundColor: ['#60a5fa', '#818cf8', '#a855f7', '#38bdf8'],
+          borderRadius: 12,
+          maxBarThickness: 40,
+        }],
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+        },
+        scales: {
+          x: {
+            ticks: { color: '#cbd5e1' },
+            grid: { display: false },
+          },
+          y: {
+            ticks: { color: '#cbd5e1' },
+            grid: { color: 'rgba(148, 163, 184, 0.18)' },
+          },
+        },
+      },
+    });
+
+    new Chart(trailDensityCtx, {
+      type: 'doughnut',
+      data: {
+        labels: ['Low', 'Medium', 'High'],
+        datasets: [{
+          data: [42, 37, 21],
+          backgroundColor: ['#38bdf8', '#8b5cf6', '#f97316'],
+          borderWidth: 0,
+        }],
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            position: 'bottom',
+            labels: { color: '#cbd5e1' },
+          },
+        },
+      },
+    });
+
+    function toggleAccordion(button) {
+      const panel = button.nextElementSibling;
+      const isHidden = panel.classList.toggle('hidden');
+      button.setAttribute('aria-expanded', String(!isHidden));
+      button.querySelector('span:last-child').textContent = isHidden ? '+' : '−';
+    }
+  </script>
+</body>
+</html>
