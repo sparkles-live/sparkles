@@ -1,0 +1,223 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Additional Tools &mdash; ROSALIA 0.9.5 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=61b282d3"></script>
+      <script src="_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="How to use" href="usage.html" />
+    <link rel="prev" title="Solar System Objects" href="SSOs.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            ROSALIA
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="mission.html">What is ROSALIA?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="measuringstray.html">Stray Light</a></li>
+<li class="toctree-l1"><a class="reference internal" href="zodiacal.html">Zodiacal Light</a></li>
+<li class="toctree-l1"><a class="reference internal" href="PSF.html">In-field Stars</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SSOs.html">Solar System Objects</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Additional Tools</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#finding-the-nominal-position-angle">Finding the nominal position angle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#planning-offset-observations">Planning offset observations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#transforming-asdf-to-fits">Transforming ASDF to FITS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#generating-some-mock-roman-wfi-observations">Generating some mock Roman / WFI observations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#estimating-the-surface-brigthness-limit-of-roman-wfi-observations">Estimating the surface brigthness limit of Roman WFI observations</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">How to use</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nexus.html">Roman Research Nexus</a></li>
+<li class="toctree-l1"><a class="reference internal" href="whoarewe.html">Who is ROSALIA?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rosalia.html">ROSALIA package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">ROSALIA</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Additional Tools</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/tutorials.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="additional-tools">
+<h1>Additional Tools<a class="headerlink" href="#additional-tools" title="Link to this heading"></a></h1>
+<p>This section contains some code examples and Jupyter notebook tutorials to help you get started with ROSALIA and its functionalities.</p>
+<section id="finding-the-nominal-position-angle">
+<h2>Finding the nominal position angle<a class="headerlink" href="#finding-the-nominal-position-angle" title="Link to this heading"></a></h2>
+<p>Due to the asymmetric design of the Nancy Grace Roman Space Telescope, there is an optimal position angle for the observations that maximizes the power in the solar panels and minimizes the stray-light from the Sun. Since the Sun moves across the sky as a function of time, the optimal position angle for a given target will change as well. ROSALIA includes a function based on <a class="reference external" href="https://roman-docs.stsci.edu/simulation-tools/additional-simulation-tools/pysiaf-for-roman#PySIAFforRoman-fig1">PySIAF</a>  to easily calculate the optimal position angle for the observatory a given target and date. <a href="#id1"><span class="problematic" id="id2">*</span></a>Note: This function has a known discrepancy of ~0.1 degrees with the nominal PAV3 values estimated by the Roman APT. We are still working on this issue, but the results are sufficiently accurate for most purposes.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">rosalia</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">rs</span>
+<span class="c1"># Let&#39;s say that we want to observe a target at the following coordinates:</span>
+<span class="n">ra</span> <span class="o">=</span> <span class="mf">56.6583333</span>  <span class="c1"># Right ascension, in degrees.</span>
+<span class="n">dec</span> <span class="o">=</span> <span class="o">+</span><span class="mf">24.1780556</span> <span class="c1"># Declination, in degrees.</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">astropy.time</span><span class="w"> </span><span class="kn">import</span> <span class="n">Time</span>
+
+<span class="n">date</span> <span class="o">=</span> <span class="n">Time</span><span class="p">(</span><span class="s2">&quot;2027-06-01T00:00:00&quot;</span><span class="p">)</span> <span class="c1"># Date of the observation, in Astropy Time YYYY-MM-DDTHH:MM:SS format.</span>
+
+<span class="n">nominal_PA</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">telescopes</span><span class="o">.</span><span class="n">Roman</span><span class="o">.</span><span class="n">get_bestPA</span><span class="p">(</span><span class="n">ra</span><span class="o">=</span><span class="n">ra_star</span><span class="p">,</span> <span class="n">dec</span><span class="o">=</span><span class="n">dec_star</span><span class="p">,</span> <span class="n">mjd</span><span class="o">=</span><span class="n">date</span><span class="o">.</span><span class="n">mjd</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">rs.telescopes.Roman.get_bestPA</span></code> will return the optimal V3 position angle for the observation of a target at the given coordinates and date. The V3 position angle is defined as the angle between the equatorial North direction and the perpendicular vector to the spacecraft sun-shield, measured in degrees. The nominal (best) V3 position angle is the one that minimizes the stray-light from the Sun and maximizes the power in the solar panels. Notice that this angle is different from the position angle of the WFI focal plane, which is defined as the angle between the equatorial North direction and the Y-axis of the WFI focal plane.</p>
+<img alt="Diagram defining the different coordinate systems of Roman Space Telescope and WFI. The position angle of the WFI focal plane is defined as the angle between the equatorial North direction and the Y-axis of the WFI focal plane. The nominal (best) V3 position angle is the one that minimizes the stray-light from the Sun and maximizes the power in the solar panels." src="https://roman-docs.stsci.edu/files/131893097/131893098/2/1768494993154/Roman+FOV+modified.png" />
+<img alt="Diagram defining the different coordinate systems of Roman Space Telescope and WFI." src="https://roman-docs.stsci.edu/files/131893097/131893100/2/1768494992608/WFI-FOV-SIAF.png" />
+</section>
+<section id="planning-offset-observations">
+<h2>Planning offset observations<a class="headerlink" href="#planning-offset-observations" title="Link to this heading"></a></h2>
+<p>A more complicated case is the need to observe a target with a custom offset. For example, if we want to place a bright star with coordinates (RA1, Dec1) in the top west corner of the WFI focal plane, we would need to place the target at approximately [dX, dY] = [-0.4118, 0.20625] degrees from the center of the focal plane. To calculate the new coordinates of the center of the focal plane (RA2, Dec2) and still be able to use the nominal position angle (which depends on the epoch), we can use the following function:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">rosalia</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">rs</span>
+<span class="c1"># Let&#39;s say that we want to observe a target at the following coordinates:</span>
+<span class="n">ra</span> <span class="o">=</span> <span class="mf">56.6583333</span>  <span class="c1"># Right ascension, in degrees.</span>
+<span class="n">dec</span> <span class="o">=</span> <span class="o">+</span><span class="mf">24.1780556</span> <span class="c1"># Declination, in degrees.</span>
+<span class="n">dX</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.4118</span>
+<span class="n">dY</span> <span class="o">=</span> <span class="mf">0.20625</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">astropy.time</span><span class="w"> </span><span class="kn">import</span> <span class="n">Time</span>
+
+<span class="n">date</span> <span class="o">=</span> <span class="n">Time</span><span class="p">(</span><span class="s2">&quot;2027-06-01T00:00:00&quot;</span><span class="p">)</span> <span class="c1"># Date of the observation, in Astropy Time YYYY-MM-DDTHH:MM:SS format.</span>
+
+<span class="n">offset_pointing</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">telescopes</span><span class="o">.</span><span class="n">Roman</span><span class="o">.</span><span class="n">find_wfi_center_for_offset_target</span><span class="p">(</span><span class="n">ra_target</span><span class="o">=</span><span class="n">ra</span><span class="p">,</span> <span class="n">dec_target</span><span class="o">=</span><span class="n">dec</span><span class="p">,</span> <span class="n">mjd</span><span class="o">=</span><span class="n">date</span><span class="o">.</span><span class="n">mjd</span><span class="p">,</span> <span class="n">dX</span><span class="o">=</span><span class="n">dX</span><span class="p">,</span> <span class="n">dY</span><span class="o">=</span><span class="n">dY</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">rs.telescopes.Roman.find_wfi_center_for_offset_target</span></code> will return the new coordinates of the center of the focal plane (ra_wficen, dec_wficen), the position angle of the WFI focal plane (PA_WFI_offset), the V3 position angle (V3PA_offset), and the V3 position angle for the non-offset pointing (V3PA_origin).</p>
+</section>
+<section id="transforming-asdf-to-fits">
+<h2>Transforming ASDF to FITS<a class="headerlink" href="#transforming-asdf-to-fits" title="Link to this heading"></a></h2>
+<p><a class="reference external" href="https://asdf.readthedocs.io/en/latest/">ASDF</a> is the successor of <a class="reference external" href="https://www.stsci.edu/hst/wfpc2/Wfpc2_dhb/intro_ch23.html">FITS</a> format and has been adopted since JWST. While GUI visualizers like SAO DS9 are not yet compatible with ASDF (<a class="reference external" href="https://www.stsci.edu/files/live/sites/www/files/home/jwst/science-planning/user-committees/jwst-users-committee/_documents/jstuc-0919-data-analysis-tool-ferguson.pdf">see JWST Users Committee note</a>), ROSALIA provides an easy way to extract useful information from ASDF files through <code class="docutils literal notranslate"><span class="pre">exposure-inspector</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">rosalia</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">rs</span>
+<span class="n">exposure_identity</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">exposure_inspector</span><span class="p">(</span><span class="n">input_name</span><span class="o">=</span><span class="s2">&quot;your_exposure.asdf&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">rs.utils.exposure_inspector</span></code> returns a series of fields containing basic information from the ASDF tree, including the name of the telescope, instrument, detector, pointing information (RA/Dec), WCS of the header(s). For Roman and Hubble Space Telescope exposures, ROSALIA will automatically find the filter transmission curve in <cite>SVO server &lt;https://svo2.cab.inta-csic.es/svo/theory/fps/&gt;</cite> and include it in the output.</p>
+<p>If the input FITS files correspond to multiple SCI exposures (e.g., one per SCA), the output will be a list of arrays, one per exposure. For Roman/WFI, one ASDF file per SCA (detector) will be generated. To combine the information from multiple ASDF files, we can use a pattern. For example, if we have 18 ASDF files named <code class="docutils literal notranslate"><span class="pre">your_exposure_SCA01.asdf</span></code>, <code class="docutils literal notranslate"><span class="pre">your_exposure_SCA02.asdf</span></code>, …, <code class="docutils literal notranslate"><span class="pre">your_exposure_SCA18.asdf</span></code>, we can use the following command to extract the information from all 18 files at once:</p>
+<p>The output will be a single FITS file containing the combined information from all 18 ASDF files, which can be easily visualized in SAODS9 or any other FITS viewer. The name of the output FITS file will be the same as the input pattern, but with the <code class="docutils literal notranslate"><span class="pre">*</span></code> replaced by <code class="docutils literal notranslate"><span class="pre">_</span></code> and the extension changed to <code class="docutils literal notranslate"><span class="pre">.fits</span></code>. For example, the output file for the previous command will be named <code class="docutils literal notranslate"><span class="pre">your_exposure_SCA_.fits</span></code>.</p>
+<p>exposure-inspector can be used in the terminal as well, by providing the name of the ASDF file as an argument. For example:</p>
+<p>Producing the same resutls as the previous Python command, but in the terminal.</p>
+</section>
+<section id="generating-some-mock-roman-wfi-observations">
+<h2>Generating some mock Roman / WFI observations<a class="headerlink" href="#generating-some-mock-roman-wfi-observations" title="Link to this heading"></a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">ROSALIA</span></code> works over level 2 images. We can use <code class="docutils literal notranslate"><span class="pre">romanisim</span></code> to generate mock Roman/WFI exposures. This is particularly useful for testing <code class="docutils literal notranslate"><span class="pre">ROSALIA</span></code>’s functionalities on Roman data, and for visualizing the impact of stray light on Roman/WFI observations. Note that this is not needed to run <code class="docutils literal notranslate"><span class="pre">ROSALIA</span></code>, as the main modules will accept coordinates and WCS information as input, and will generate dummy images. However, <code class="docutils literal notranslate"><span class="pre">romanisim</span></code> includes multiple processing effects on  to generate a realistic Roman/WFI exposure, and then use <code class="docutils literal notranslate"><span class="pre">ROSALIA</span></code> to analyze the stray light in that exposure. We encourage users to visit the official webpage of <code class="docutils literal notranslate"><span class="pre">romanisim</span></code> for more information on the package and its functionalities: <a class="reference external" href="https://romanisim.readthedocs.io/en/latest/">https://romanisim.readthedocs.io/en/latest/</a>, but we include a simple example here to get you started.</p>
+<ol class="arabic">
+<li><p>Install <code class="docutils literal notranslate"><span class="pre">romanisim</span></code> and generate a Roman/WFI example image. For this experiment—<em>and to maximize the visualization of stray-light</em>—we will simulate an exposure near Orion’s Belt.</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>romanisim
+romanisim-make-image<span class="w"> </span>--radec<span class="w"> </span><span class="m">83</span>.3419927<span class="w"> </span>-1.9665163<span class="w"> </span>RST_WFI_ROSALIA_test_Orion_Belt_SCA<span class="o">{}</span>.asdf<span class="w"> </span>--roll<span class="w"> </span>-45<span class="w"> </span>--sca<span class="w"> </span>-1<span class="w"> </span>--bandpass<span class="w"> </span>F158<span class="w"> </span>--level<span class="w"> </span><span class="m">2</span><span class="w"> </span>--usecrds
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><code class="docutils literal notranslate"><span class="pre">romanisim</span></code> is a package in active development. Please visit the official webpage for more information on usage: <a class="reference external" href="https://romanisim.readthedocs.io/en/latest/">https://romanisim.readthedocs.io/en/latest/</a></p>
+</div>
+<p>Notice the {} in the filename and the -1 in the –sca argument. That will instruct <code class="docutils literal notranslate"><span class="pre">romanisim</span></code> to generate files for the 18 Roman / WFI SCAs. The result from the previous command will be a series of files (18 in total, one ASDF file per Roman / WFI SCA) in the local directory.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">-rw-r--r--   1 user  staff   391M Nov 26 16:02 RST_WFI_ROSALIA_test_Orion_Belt_SCAWFI01.asdf</span>
+<span class="go">-rw-r--r--   1 user  staff   391M Nov 26 15:39 RST_WFI_ROSALIA_test_Orion_Belt_SCAWFI02.asdf</span>
+<span class="go">-rw-r--r--   1 user  staff   391M Nov 26 15:42 RST_WFI_ROSALIA_test_Orion_Belt_SCAWFI03.asdf</span>
+<span class="go">-rw-r--r--   1 user  staff   391M Nov 26 15:46 RST_WFI_ROSALIA_test_Orion_Belt_SCAWFI04.asdf</span>
+<span class="go">-rw-r--r--   1 user  staff   391M Nov 26 15:49 RST_WFI_ROSALIA_test_Orion_Belt_SCAWFI05.asdf</span>
+<span class="go">-rw-r--r--   1 user  staff   391M Nov 26 15:53 RST_WFI_ROSALIA_test_Orion_Belt_SCAWFI06.asdf</span>
+<span class="go">-rw-r--r--   1 user  staff   391M Nov 26 15:56 RST_WFI_ROSALIA_test_Orion_Belt_SCAWFI07.asdf</span>
+<span class="go">-rw-r--r--   1 user  staff   391M Nov 26 15:59 RST_WFI_ROSALIA_test_Orion_Belt_SCAWFI08.asdf</span>
+<span class="go">-rw-r--r--   1 user  staff   391M Nov 26 16:03 RST_WFI_ROSALIA_test_Orion_Belt_SCAWFI09.asdf</span>
+<span class="go">-rw-r--r--   1 user  staff   391M Nov 26 16:06 RST_WFI_ROSALIA_test_Orion_Belt_SCAWFI10.asdf</span>
+<span class="go">-rw-r--r--   1 user  staff   391M Nov 26 16:10 RST_WFI_ROSALIA_test_Orion_Belt_SCAWFI11.asdf</span>
+<span class="go">-rw-r--r--   1 user  staff   391M Nov 26 16:13 RST_WFI_ROSALIA_test_Orion_Belt_SCAWFI12.asdf</span>
+<span class="go">-rw-r--r--   1 user  staff   391M Nov 26 16:22 RST_WFI_ROSALIA_test_Orion_Belt_SCAWFI13.asdf</span>
+<span class="go">-rw-r--r--   1 user  staff   391M Nov 27 07:14 RST_WFI_ROSALIA_test_Orion_Belt_SCAWFI14.asdf</span>
+<span class="go">-rw-r--r--   1 user  staff   391M Nov 27 08:53 RST_WFI_ROSALIA_test_Orion_Belt_SCAWFI15.asdf</span>
+<span class="go">-rw-r--r--   1 user  staff   391M Nov 27 08:56 RST_WFI_ROSALIA_test_Orion_Belt_SCAWFI16.asdf</span>
+<span class="go">-rw-r--r--   1 user  staff   391M Nov 27 09:00 RST_WFI_ROSALIA_test_Orion_Belt_SCAWFI17.asdf</span>
+<span class="go">-rw-r--r--   1 user  staff   391M Nov 27 09:04 RST_WFI_ROSALIA_test_Orion_Belt_SCAWFI18.asdf</span>
+</pre></div>
+</div>
+<p>These 18 files represent a single Roman/WFI level 2 (calibrated, non-combined) exposure.</p>
+</li>
+</ol>
+</section>
+<section id="estimating-the-surface-brigthness-limit-of-roman-wfi-observations">
+<h2>Estimating the surface brigthness limit of Roman WFI observations<a class="headerlink" href="#estimating-the-surface-brigthness-limit-of-roman-wfi-observations" title="Link to this heading"></a></h2>
+<p>In this tutorial you can find an example of use of a very approximate function to estimate the surface brightness limit of Roman/WFI observations as a function of the exposure time and the level of stray light in the field. This is not meant to be a rigorous calculation, but rather an example of how to use ROSALIA to quickly estimate the impact of stray light on the surface brightness limit of Roman/WFI observations.</p>
+<p>This is a very crude solution that should be considered as maximum surface brightness limit. Real surface brightness limits will be brighter (worse) than this estimate, as it does not take into account systematic effects like flat field, CTE, bias, or gradients due to stray-light. The only limiting factor is photon noise from Zodiacal light. However, for most observations, Zodiacal light is 95% of the limit, so it will work sufficiently well for the vast majority of purposes.</p>
+<p>For a more realistic simulation, we recommend to simulate the individual exposures with Romanisim: <a class="reference external" href="https://romanisim.readthedocs.io/en/latest/">https://romanisim.readthedocs.io/en/latest/</a>, and then combine the individual exposures. The resulting noise then will include the systematic effects mentioned above.</p>
+<ul class="simple">
+<li><p><code class="xref download docutils literal notranslate"><span class="pre">R0_Surface_brightness_limit.ipynb</span></code></p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="SSOs.html" class="btn btn-neutral float-left" title="Solar System Objects" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="usage.html" class="btn btn-neutral float-right" title="How to use" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, NASA Ames Research Center / Code S / Alejandro S. Borlaff.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
