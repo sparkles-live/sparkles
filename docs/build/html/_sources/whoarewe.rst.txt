@@ -1,38 +1,24 @@
-Who is ROSALIA?
+Who is SPARKLES?
 ===============
 
 .. image:: ../../images/raccoon5.png
   :width: 500
   :alt: NASA Ames Research Center - Code S - RACCOONS team
 
-**ROSALIA** is being built and supported by the RACCOONS team at the Space Science and Astrobiology division of the NASA Ames Research Center. *ROSALIA* is funded through a NASA Grant (D.14 Roman 2022), *ROSES/Nancy Grace Roman Space Telescope Research and Support Participation Opportunities.*
+**SPARKLES** is being built and supported by the RACCOONS team at the Space Science and Astrobiology division of the NASA Ames Research Center. The RACCOONS team is a group of scientists and engineers dedicated to understanding and mitigating the impact systematic effects on astronomical observations, among many other research areas. We work closely with the International Astronomical Union's Center for the Protection of the Dark and Quiet Sky from Satellite Constellation Interference (CPS) to coordinate efforts between astronomers, industry, and government agencies to find solutions to this problem.
 
-If you have any questions, suggestions, or want to contribute to the project, please do not hesitate to contact us at a.s.borlaff@nasa.gov.
+If you have any questions, suggestions, or want to contribute to the project, please do not hesitate to `contact us <a.s.borlaff@nasa.gov>`_.
 
-The ROSALIA team is:
+**The SPARKLES team is:**
 
-Alejandro S. Borlaff  (Scientific PI) - NASA Ames Research Center, BAERI – a.s.borlaff@nasa.gov
+Alejandro S. Borlaff - NASA Ames Research Center, IAU-CPS, BAERI
 
-Pamela M. Marcum (Admin PI) - NASA Ames Research Center
+Pamela M. Marcum - NASA Ames Research Center
 
-Scott Rohrbach (Optical Engineer) - NASA Goddard Space Flight Center
+Steve B. Howell - NASA Ames Research Center
 
-Seppo Laine (Roman Scientist) - IPAC Caltech, Pasadena, USA
+Pablo M. Sanchez-Alarcon - NASA Ames Research Center
 
-Pablo M. Sanchez-Alarcon (NASA Postdoctoral Fellow) - NASA Ames Research Center
+David Dubois - Centre de recherche sur les Ions, les Matériaux et la Photonique Université Caen Normandie, ENSICAEN, CNRS, CEA
 
-Mireia Montes (collaborator) - Institute of Space Sciences (ICE-CSIC), Spain
-
-Anton Koekemoer (collaborator) - STScI, Baltimore, USA
-
-Fernando Buitrago (collaborator) - Universidad de Valladolid, Spain
-
-Sarah Caddy (collaborator) - Melbourne Space Laboratory, University of Melbourne, Australia
-
-Contributors: 
-
-Roman Space Telescope Attitude:
-
-Dr. Maxime Rizzo - NASA Goddard Space Flight Center. 
-
-Dr. Mario Gennaro - STScI, Baltimore, USA.
+Jonathan McDowell  - Space Research Centre, Durham University, Stockton Rd, Durham, DH1 3LE, UK

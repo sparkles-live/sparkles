@@ -12,10 +12,10 @@ import sys
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
-project = 'ROSALIA'
-copyright = '2025, NASA Ames Research Center / Code S / Alejandro S. Borlaff'
+project = 'SPARKLES'
+copyright = '2026, NASA Ames Research Center / Code S / Alejandro S. Borlaff'
 author = 'Alejandro S. Borlaff'
-release = '0.9.5'
+release = '1.2.0'
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
@@ -38,6 +38,6 @@ language = 'en'
 #html_permalinks_icon = '<span>#</span>'
 html_theme = 'sphinx_rtd_theme'
 html_static_path = ['_static']
-html_logo = "../../images/rosalia_logo.png"
+html_logo = "../../images/sparkles_logo.png"
 # user starts in dark mode
-default_dark_mode = False
+default_dark_mode = True
